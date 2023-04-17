@@ -1,0 +1,40 @@
+name: prd
+
+spring:
+  application:
+    name: item-service
+  datasource:
+    url: jdbc:postgresql://pg-items:5432/item_db
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: none
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+
+eureka:
+  client:
+    fetch-registry: true
+    registry-with-eureka: true
+    service-url:
+      defaultZone: http://eurekaservice:8761/eureka
+      
+product-service:
+  instance:
+    name: product-service
+    
+resilience4j:
+  circuitbreaker:
+    instances:
+      getProductCB:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowType: TIME_BASED
+        minimumNumberOfCalls: 4
+        waitDurationInOpenState: 5s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
