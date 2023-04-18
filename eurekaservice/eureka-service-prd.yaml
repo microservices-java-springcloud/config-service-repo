@@ -1,0 +1,6 @@
+name: prd
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
